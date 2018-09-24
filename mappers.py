@@ -30,6 +30,30 @@ class Data(ABC):
     def fields_tuple(self):
         return AsIs('({})'.format(', '.join(map(str, self.valuable_dict.keys()))))
 
+    def __validate_dict(self, dict):
+        errors = {}
+        for key, value in dict.items():
+            if not getattr(self, key, None):
+                errors[key] = 'Key is not allowed'
+        return bool(errors), errors
+
+    @staticmethod
+    def __sql_update_tuple(data):
+        values = map(lambda i: '{} = {}'.format(i[0], sql_stringify(*i[1])), data.items())
+        return AsIs(', '.join(values))
+
+    @property
+    def replace_tuple(self):
+        replace_tuple = self.__dict__.copy()
+        replace_tuple.pop('id')
+        return self.__sql_update_tuple(replace_tuple)
+
+    def update_tuple(self, diff=None):
+        is_valid, errors = self.__validate_dict(diff)
+        if not is_valid:
+            raise ValueError("Data is not valid in update dict.")
+        return self.__sql_update_tuple(diff)
+
     @classmethod
     def get_mapper(cls, connection):
         return cls.custom_mapper or Mapper(connection, cls)
@@ -52,7 +76,7 @@ class Mapper:
 
     @property
     def __quoteless_table_name(self):
-        return AsIs(self.table_name)
+        return AsIs(self.table_name.lower())
 
     def get_by_id(self, id):
         self.cursor.execute('SELECT * FROM %s WHERE id = %s;', (self.__quoteless_table_name, id,))
@@ -70,7 +94,9 @@ class Mapper:
         if commit:
             self.connection.commit()
 
-    def update(self, obj):
-        # Todo: check how and implement update method.
-        raise NotImplemented
+    def replace(self, obj):
+        self.cursor.execute(
+            'UPDATE %s SET %s WHERE id = %s;',
+            (self.__quoteless_table_name, obj.replace_tuple, obj.id)
+        )
 
