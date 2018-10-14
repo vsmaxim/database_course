@@ -16,6 +16,12 @@ class Data(ABC):
     # Todo: consider something about this
     id = ''
 
+    def __init__(self):
+        for key in self.__dict__.keys():
+            attr = getattr(self, key)
+            if attr is not None and isinstance(attr, list):
+                setattr(self, key, getattr(self, key)[0])
+
     @property
     def values_tuple(self):
         return AsIs('({})'.format(', '.join(map(sql_stringify, self.valuable_dict.values()))))

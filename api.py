@@ -1,14 +1,14 @@
-import abc
-
 import psycopg2
 from flask import Flask
 from flask_restful import Api
+from flask_cors import CORS
 
-import data as models
 import resources
+import data as models
 
 app = Flask(__name__)
 api = Api(app)
+cors = CORS(app)
 conn = psycopg2.connect(dbname='dogz', user='dogz', password='dogz', host='localhost', port='5432')
 
 

@@ -19,7 +19,7 @@ class ListCreateResource(ModelResource):
         return list(map(lambda instance: instance.json, self.mapper.get_all()))
 
     def post(self):
-        obj = self.data(None, **request.form)
+        obj = self.data(None, **request.json)
         self.mapper.save(obj)
         return obj.json, 201
 
@@ -29,6 +29,6 @@ class RetrieveUpdateResource(ModelResource):
         return self.mapper.get_by_id(id).json
 
     def put(self, id):
-        obj = self.data(id, **request.form)
+        obj = self.data(id, **request.json)
         self.mapper.replace(obj)
         return obj.json, 200
