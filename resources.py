@@ -19,6 +19,7 @@ class ListCreateResource(ModelResource):
         return list(map(lambda instance: instance.json, self.mapper.get_all()))
 
     def post(self):
+        print(request.json)
         obj = self.data(None, **request.json)
         self.mapper.save(obj)
         return obj.json, 201

@@ -84,9 +84,5 @@
 </script>
 
 <style scoped>
-    form {
-        margin-top: 20px;
-        margin-left: 120px;
-        margin-right: 120px;
-    }
+
 </style>

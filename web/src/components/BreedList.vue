@@ -38,16 +38,4 @@
 </script>
 
 <style scoped>
-    .table {
-        margin: 20px;
-    }
-    .page-header {
-        margin: 20px;
-    }
-    .page-header > h2 {
-        display: inline;
-    }
-    .page-header > a {
-        float: right;
-    }
 </style>

@@ -1,3 +1,5 @@
+from flask import request
+
 from mappers import Data
 
 
@@ -53,9 +55,9 @@ class Dog(Data):
     def __str__(self):
         return self.fancy_name
 
-
+# Todo: fix id
 class Experts(Data):
-    def __init__(self, participant_id, ring_id):
+    def __init__(self, id, participant_id = None, ring_id = None):
         self.participant_id = participant_id
         self.ring_id = ring_id
         super().__init__()

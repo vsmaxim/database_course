@@ -15,6 +15,7 @@
                     <li class="nav-item"><router-link to="/clubs" class="nav-link">Clubs</router-link></li>
                     <li class="nav-item"><router-link to="/rings" class="nav-link">Rings</router-link></li>
                     <li class="nav-item"><router-link to="/breeds" class="nav-link">Breeds</router-link></li>
+                    <li class="nav-item"><router-link to="/experts" class="nav-link">Experts</router-link></li>
                 </ul>
             </div>
         </nav>
@@ -32,12 +33,21 @@
 </script>
 
 <style>
-    /*#app {*/
-    /*font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
-    /*-webkit-font-smoothing: antialiased;*/
-    /*-moz-osx-font-smoothing: grayscale;*/
-    /*text-align: center;*/
-    /*color: #2c3e50;*/
-    /*margin-top: 60px;*/
-    /*}*/
+    .table {
+        margin: 20px;
+    }
+    .page-header {
+        margin: 20px;
+    }
+    .page-header > h2 {
+        display: inline;
+    }
+    .page-header > a {
+        float: right;
+    }
+    form {
+        margin-top: 20px;
+        margin-left: 120px;
+        margin-right: 120px;
+    }
 </style>

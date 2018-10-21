@@ -17,7 +17,8 @@ CREATE TABLE participant (
   club_id     INTEGER REFERENCES club,
   first_name  VARCHAR(64) NOT NULL,
   middle_name VARCHAR(64) NOT NULL,
-  last_name   VARCHAR(64) NOT NULL
+  last_name   VARCHAR(64) NOT NULL,
+  dog_id INTEGER REFERENCES dog
 );
 
 CREATE TABLE breed (
@@ -34,6 +35,7 @@ CREATE TABLE dog (
   id            SERIAL PRIMARY KEY,
   fancy_name    VARCHAR(64) NOT NULL,
   age           INTEGER CHECK (age > 0),
+  breed_id INTEGER REFERENCES breed,
   fathers_breed INTEGER REFERENCES breed,
   mothers_breed INTEGER REFERENCES breed
 );

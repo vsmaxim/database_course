@@ -1,6 +1,6 @@
 import psycopg2
-from flask import Flask
-from flask_restful import Api
+from flask import Flask, request, Response
+from flask_restful import Api, Resource
 from flask_cors import CORS
 
 import resources
@@ -66,6 +66,40 @@ class PrizeListResource(resources.ListCreateResource):
 
 class PrizeRetrieveResource(resources.RetrieveUpdateResource):
     data = models.Prizes
+
+
+class AddResultsResource(resources.ModelResource):
+    data = models.Prizes
+
+    def post(self):
+        """
+        data: [{
+            ring_id: int,
+            dog_id: int,
+            place: int,
+        }]
+        :return:
+        """
+        data = request.json
+        prize_objects = [self.data(**prize) for prize in data]
+        for prize in prize_objects:
+            self.mapper.save(prize)
+        return {"message": "Prizes successfully added"}, 201
+
+
+class ParticipantRingResource(resources.ModelResource):
+    data = models.Participant
+
+    def get(self, id):
+        self.mapper.get_by_id()
+
+
+class ParticipantRingResource(resources.Resource):
+
+    def post(self):
+        data = request.json
+
+
 
 
 api.add_resource(ClubListResource, '/clubs')
