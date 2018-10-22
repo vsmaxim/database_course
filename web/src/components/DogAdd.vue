@@ -14,16 +14,24 @@
             <input type="number" id="age" v-model="form.age" name="age" min="0" class="form-control"/>
         </div>
         <div class="form-group">
-            <label for="mothers_breed">Mothers breed:</label>
-            <select class="form-control" name="mothers_breed" id="mothers_breed" v-model="form.mothers_breed">
+            <label for="breed_id">Breed:</label>
+            <select class="form-control" name="breed_id" id="breed_id" v-model="form.breed_id">
                 <option v-for="breed in breeds" :key="breed.id" :value="breed.id">
                     {{ breed.name }}
                 </option>
             </select>
         </div>
         <div class="form-group">
-            <label for="fathers_breed">Fathers breed:</label>
-            <select class="form-control" name="fathers_breed" id="fathers_breed" v-model="form.fathers_breed">
+            <label for="mothers_breed_id">Mothers breed:</label>
+            <select class="form-control" name="mothers_breed_id" id="mothers_breed_id" v-model="form.mothers_breed_id">
+                <option v-for="breed in breeds" :key="breed.id" :value="breed.id">
+                    {{ breed.name }}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="fathers_breed_id">Fathers breed:</label>
+            <select class="form-control" name="fathers_breed_id" id="fathers_breed_id" v-model="form.fathers_breed_id">
                 <option v-for="breed in breeds" :key="breed.id" :value="breed.id">
                     {{ breed.name }}
                 </option>
@@ -45,8 +53,9 @@
                 form: {
                     fancy_name: null,
                     age: null,
-                    fathers_breed: null,
-                    mothers_breed: null,
+                    breed_id: null,
+                    fathers_breed_id: null,
+                    mothers_breed_id: null,
                 }
             }
         },
@@ -69,8 +78,9 @@
                     this.submitForm({
                         fancy_name: this.form.fancy_name,
                         age: this.form.age,
-                        fathers_breed: this.form.fathers_breed,
-                        mothers_breed: this.form.mothers_breed
+                        breed_id: this.form.breed_id,
+                        fathers_breed_id: this.form.fathers_breed_id,
+                        mothers_breed_id: this.form.mothers_breed_id
                     })
                 }
             },

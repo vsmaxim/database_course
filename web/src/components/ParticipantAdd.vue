@@ -18,6 +18,14 @@
             <input type="text" name="last_name" id="last_name" v-model="form.last_name" class="form-control"/>
         </div>
         <div class="form-group">
+            <label for="dog">Dog:</label>
+            <select class="form-control" name="dog" id="dog" v-model="form.dog">
+                <option v-for="dog in dogs" :key="dog.id" :value="dog.id">
+                    {{ dog.fancy_name }}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
             <label for="club">Club:</label>
             <select class="form-control" name="club" id="club" v-model="form.club">
                 <option v-for="club in clubs" :key="club.id" :value="club.id">
@@ -38,17 +46,22 @@
             return {
                 errors: [],
                 clubs: [],
+                dogs: [],
                 form: {
                     first_name: null,
                     last_name: null,
                     middle_name: null,
-                    club: null
+                    club: null,
+                    dog: null
                 }
             }
         },
         mounted: function () {
             axios.get("http://localhost:5000/clubs")
                 .then((response) => this.clubs = response.data)
+                .catch((e) => console.log(e));
+            axios.get("http://localhost:5000/dogs")
+                .then((response) => this.dogs = response.data)
                 .catch((e) => console.log(e));
         },
         methods: {
@@ -68,6 +81,7 @@
                         middle_name: this.form.middle_name,
                         last_name: this.form.last_name,
                         club_id: this.form.club,
+                        dog_id: this.form.dog,
                     });
                 }
             },

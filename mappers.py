@@ -62,7 +62,10 @@ class Data(ABC):
 
     @classmethod
     def get_mapper(cls, connection):
-        return cls.custom_mapper or Mapper(connection, cls)
+        if cls.custom_mapper:
+            return cls.custom_mapper(connection, cls)
+        else:
+            return Mapper(connection, cls)
 
     @property
     def json(self):
@@ -89,7 +92,7 @@ class Mapper:
         return self.obj_class(*self.cursor.fetchone())
 
     def get_all(self):
-        self.cursor.execute('SELECT * FROM %s;', (self.__quoteless_table_name, ))
+        self.cursor.execute('SELECT * FROM %s;', (self.__quoteless_table_name, )) # Todo: rearrange fields somehow
         return list(map(lambda it: self.obj_class(*it), self.cursor.fetchall()))
     
     def save(self, obj, commit=True):

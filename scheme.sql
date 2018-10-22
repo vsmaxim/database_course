@@ -12,13 +12,17 @@ CREATE TABLE club (
   name VARCHAR(64) NOT NULL
 );
 
+CREATE TABLE dog (
+  id            SERIAL PRIMARY KEY,
+  fancy_name    VARCHAR(64) NOT NULL,
+  age           INTEGER CHECK (age > 0)
+);
+
 CREATE TABLE participant (
   id          SERIAL PRIMARY KEY,
-  club_id     INTEGER REFERENCES club,
   first_name  VARCHAR(64) NOT NULL,
   middle_name VARCHAR(64) NOT NULL,
-  last_name   VARCHAR(64) NOT NULL,
-  dog_id INTEGER REFERENCES dog
+  last_name   VARCHAR(64) NOT NULL
 );
 
 CREATE TABLE breed (
@@ -27,27 +31,33 @@ CREATE TABLE breed (
 );
 
 CREATE TABLE ring (
-  id SERIAL PRIMARY KEY,
-  breed_id INTEGER REFERENCES breed
+  id SERIAL PRIMARY KEY
 );
 
-CREATE TABLE dog (
-  id            SERIAL PRIMARY KEY,
-  fancy_name    VARCHAR(64) NOT NULL,
-  age           INTEGER CHECK (age > 0),
-  breed_id INTEGER REFERENCES breed,
-  fathers_breed INTEGER REFERENCES breed,
-  mothers_breed INTEGER REFERENCES breed
-);
-
-CREATE TABLE experts (
-  participant_id INTEGER REFERENCES participant UNIQUE,
-  ring_id        INTEGER REFERENCES ring
-);
+CREATE TABLE experts ();
 
 CREATE TABLE prizes (
   id SERIAL PRIMARY KEY,
-  dog_id  INTEGER REFERENCES dog UNIQUE,
-  place   SMALLINT CHECK (place >= 1 AND place <= 3),
-  ring_id INTEGER REFERENCES ring
+  place   SMALLINT CHECK (place >= 1 AND place <= 3)
 );
+
+ALTER TABLE dog
+    ADD COLUMN fathers_breed_id INTEGER REFERENCES breed,
+    ADD COLUMN mothers_breed_id INTEGER REFERENCES breed,
+    ADD COLUMN breed_id INTEGER REFERENCES breed;
+
+ALTER TABLE participant
+    ADD COLUMN dog_id INTEGER REFERENCES dog UNIQUE,
+    ADD COLUMN club_id INTEGER REFERENCES club;
+
+ALTER TABLE experts
+    ADD COLUMN participant_id INTEGER REFERENCES participant UNIQUE,
+    ADD COLUMN ring_id INTEGER REFERENCES ring UNIQUE;
+
+ALTER TABLE ring
+  ADD COLUMN breed_id INTEGER REFERENCES breed;
+
+ALTER TABLE prizes
+    ADD COLUMN dog_id INTEGER REFERENCES dog UNIQUE,
+    ADD COLUMN ring_id INTEGER REFERENCES ring;
+

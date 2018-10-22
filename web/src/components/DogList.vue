@@ -10,6 +10,7 @@
                 <th scope="col">id</th>
                 <th scope="col">Fancy Name</th>
                 <th scope="col">Age</th>
+                <th scope="col">Breed</th>
                 <th scope="col">Father's Breed</th>
                 <th scope="col">Mother's Breed</th>
             </tr>
@@ -19,8 +20,9 @@
                 <td>{{ dog.id }}</td>
                 <td>{{ dog.fancy_name }}</td>
                 <td>{{ dog.age }}</td>
-                <td>{{ dog.fathers_breed }}</td>
-                <td>{{ dog.mothers_breed }}</td>
+                <td>{{ dog.breed_id }}</td>
+                <td>{{ dog.fathers_breed_id }}</td>
+                <td>{{ dog.mothers_breed_id }}</td>
             </tr>
             </tbody>
         </table>
@@ -45,8 +47,9 @@
             axios.get("http://localhost:5000/dogs")
                 .then((response) => {
                     this.dogs = Array.map(response.data, (i) => {
-                       i.fathers_breed = this.breeds[i.fathers_breed];
-                       i.mothers_breed = this.breeds[i.mothers_breed];
+                       i.fathers_breed_id = this.breeds[i.fathers_breed_id];
+                       i.mothers_breed_id = this.breeds[i.mothers_breed_id];
+                       i.breed_id = this.breeds[i.breed_id];
                        return i;
                     });
                 });

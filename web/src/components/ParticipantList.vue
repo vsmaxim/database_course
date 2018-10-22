@@ -9,6 +9,7 @@
             <tr>
                 <th scope="col">id</th>
                 <th scope="col">Name</th>
+                <th scope="col">Dog</th>
                 <th scope="col">Club</th>
             </tr>
             </thead>
@@ -16,6 +17,7 @@
             <tr v-for="participant in participants" :key="participant.id">
                 <td>{{ participant.id }}</td>
                 <td>{{ participant.last_name}} {{participant.first_name}} {{participant.middle_name}}</td>
+                <td>{{ participant.dog }}</td>
                 <td>{{ participant.club }}</td>
             </tr>
             </tbody>
@@ -30,6 +32,7 @@
         data: function () {
             return {
                 clubs: {},
+                dogs: {},
                 participants: [],
             }
         },
@@ -41,9 +44,17 @@
                     )
                 )
                 .catch((e) => console.log(e));
+            axios.get('http://localhost:5000/dogs')
+                .then((response) => Array.forEach(
+                    response.data,
+                    (obj) => this.dogs[obj.id] = obj.fancy_name
+                ))
+                .catch((e) => console.log(e));
             axios.get('http://localhost:5000/participants')
                 .then((response) => this.participants = Array.map(response.data, (i) => {
+                    console.log(i);
                     i.club = this.clubs[i.club_id];
+                    i.dog = this.dogs[i.dog_id];
                     return i;
                 }))
                 .catch((e) => console.log(e));
