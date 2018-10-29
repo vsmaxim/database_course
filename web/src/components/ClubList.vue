@@ -9,12 +9,14 @@
             <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Club</th>
+                <th scope="col">Breeds</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="club in clubs" :key="club.id">
                 <td>{{ club.id }}</td>
                 <td>{{ club.name }}</td>
+                <td>{{ club.breeds }}</td>
             </tr>
             </tbody>
         </table>
@@ -33,7 +35,15 @@
         },
         mounted() {
             axios.get('http://localhost:5000/clubs')
-                .then((response) => (this.clubs = response.data));
+                .then((response) => this.clubs = response.data)
+                .then((clubs) => Array.forEach(clubs, (item, index) => {
+                    axios.get(`http://localhost:5000/clubs/${item.id}/breeds`)
+                        .then((response) => response.data.join(', '))
+                        .then((breeds) => {
+                            item.breeds = breeds;
+                            this.$set(this.clubs, index, item);
+                        });
+                }));
         }
     }
 </script>

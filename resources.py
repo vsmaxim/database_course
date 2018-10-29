@@ -20,7 +20,7 @@ class ListCreateResource(ModelResource):
 
     def post(self):
         print(request.json)
-        obj = self.data(None, **request.json)
+        obj = self.data(**request.json)
         self.mapper.save(obj)
         return obj.json, 201
 

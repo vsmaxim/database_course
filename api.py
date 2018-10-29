@@ -87,33 +87,48 @@ class AddResultsResource(resources.ModelResource):
         return {"message": "Prizes successfully added"}, 201
 
 
-class ParticipantRingResource(resources.ModelResource):
-    data = models.Participant
+class ClubBreedsResource(resources.ModelResource):
+    data = models.Club
 
     def get(self, id):
-        self.mapper.get_by_id()
+        return self.mapper.get_breeds(id)
 
 
-class ParticipantRingResource(resources.Resource):
+class ClubPrizesResource(resources.ModelResource):
+    data = models.Club
 
-    def post(self):
-        data = request.json
+    def get(self, id):
+        return self.mapper.get_prizes(id)
 
 
+class BreedExpertsResource(resources.ModelResource):
+    data = models.Breed
 
+    def get(self, id):
+        return self.mapper.get_experts(id)
+
+class ExpertsBreedResource(resources.ModelResource):
+    data = models.Experts
+
+    def get(self, id):
+        return self.mapper.get_dog_id(id)
 
 api.add_resource(ClubListResource, '/clubs')
 api.add_resource(ClubResource, '/clubs/<int:id>')
+api.add_resource(ClubBreedsResource, '/clubs/<int:id>/breeds')
+api.add_resource(ClubPrizesResource, '/clubs/<int:id>/prizes')
 api.add_resource(ParticipantListResource, '/participants'),
 api.add_resource(ParticipantRetrieveResource, '/participants/<int:id>')
 api.add_resource(BreedListResource, '/breeds')
 api.add_resource(BreedRetrieveResource, '/breeds/<int:id>')
+api.add_resource(BreedExpertsResource, '/breeds/<int:id>/experts')
 api.add_resource(RingListResource, '/rings')
 api.add_resource(RingRetrieveResource, '/rings/<int:id>')
 api.add_resource(DogListResource, '/dogs')
 api.add_resource(DogRetrieveResource, '/dogs/<int:id>')
 api.add_resource(ExpertsListResource, '/experts')
 api.add_resource(ExpertsUpdateResource, '/experts/<int:id>')
+api.add_resource(ExpertsBreedResource, '/experts/<int:id>/dog')
 api.add_resource(PrizeListResource, '/prizes')
 api.add_resource(PrizeRetrieveResource, '/prizes/<int:id>')
 

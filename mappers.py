@@ -1,11 +1,9 @@
 from abc import ABC
-from typing import Type, Any
+from typing import Type, Any, List
 
 from psycopg2.extensions import AsIs
 
 from utils import get_sql_table_name, SqlTranslator
-
-
 
 
 class Data:
@@ -82,6 +80,7 @@ class FetchMixin:
 class WriteMixin:
     obj_class: Type[Data]
     cursor: Any
+    connection: Any
     _table_name: str
     _translator: SqlTranslator
 
@@ -98,16 +97,16 @@ class WriteMixin:
         self.cursor.execute(
             """
                 INSERT INTO %(table)s %(fields)s
-                VALUES %(values)s
+                VALUES (%(values)s)
             """,
             {
                 "table": self._table_name,
                 "fields": self._translator.write_pattern,
-                "values": obj.values_tuple # Todo: write method to retrieve values tuple
+                "values": self._translator.write_values_pattern(obj),
             }
         )
         if commit:
-            self.cursor.commit()
+            self.connection.commit()
 
     def replace(self, diff, commit=True):
         """
@@ -129,7 +128,7 @@ class WriteMixin:
             }
         )
         if commit:
-            self.cursor.commit()
+            self.connection.commit()
 
 
 class Mapper(FetchMixin, WriteMixin):
@@ -139,5 +138,7 @@ class Mapper(FetchMixin, WriteMixin):
         self.connection = connection
         self.cursor = connection.cursor()
         self._table_name = get_sql_table_name(self.obj_class)
+        if isinstance(obj_class, type):
+            obj_class = obj_class()
         self._translator = SqlTranslator(obj_class)
         super().__init__()
