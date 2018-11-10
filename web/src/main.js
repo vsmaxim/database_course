@@ -14,6 +14,8 @@ import RingList from './components/RingList.vue';
 import RingAdd from './components/RingAdd.vue';
 import ExpertList from './components/ExpertList.vue';
 import ExpertAdd from './components/ExpertAdd';
+import PrizesList from './components/PrizesList';
+import PrizesAdd from './components/PrizesAdd';
 
 require("../node_modules/bootstrap/dist/css/bootstrap.min.css");
 
@@ -33,6 +35,8 @@ const routes = [
     {path: '/rings/add', component: RingAdd},
     {path: '/experts', component: ExpertList},
     {path: '/experts/add', component: ExpertAdd},
+    {path: '/prizes', component: PrizesList},
+    {path: '/prizes/add', component: PrizesAdd},
 ];
 
 const router = new VueRouter({

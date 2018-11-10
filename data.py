@@ -9,8 +9,8 @@ class ParticipantMapper(Mapper):
         self.cursor.execute(
             """
                 SELECT %(ring_table)s.id
-                FROM %(participant_table)s, %(dog_table)s, %(ring_table)s,
-                WHERE %(participant_table).dog_id = %(dog_table)s.id 
+                FROM %(participant_table)s, %(dog_table)s, %(ring_table)s
+                WHERE %(participant_table)s.dog_id = %(dog_table)s.id 
                     AND %(dog_table)s.breed_id = %(ring_table)s.breed_id 
                     AND %(participant_table)s.id = %(participant)s
             """,
@@ -21,7 +21,8 @@ class ParticipantMapper(Mapper):
                 "participant": id
             }
         )
-        return self.cursor.fetchall()
+        rows = self.cursor.fetchall()
+        return {"ring_id": rows[0][0] if rows else None}
 
 
 class ClubMapper(Mapper):
@@ -177,7 +178,8 @@ class Dog(Data):
 class Experts(Data):
     custom_mapper = ExpertsMapper
 
-    def __init__(self, participant_id = None, ring_id = None):
+    def __init__(self, id=None, participant_id=None, ring_id=None):
+        self.id = id
         self.participant_id = participant_id
         self.ring_id = ring_id
         super().__init__()

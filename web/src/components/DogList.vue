@@ -1,41 +1,18 @@
 <template>
-    <div>
-        <div class="page-header">
-            <h2>Dog list</h2>
-            <router-link to="/dogs/add" class="btn btn-dark">Add dog</router-link>
-        </div>
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">id</th>
-                <th scope="col">Fancy Name</th>
-                <th scope="col">Age</th>
-                <th scope="col">Breed</th>
-                <th scope="col">Father's Breed</th>
-                <th scope="col">Mother's Breed</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="dog in dogs" :key="dog.id">
-                <td>{{ dog.id }}</td>
-                <td>{{ dog.fancy_name }}</td>
-                <td>{{ dog.age }}</td>
-                <td>{{ dog.breed_id }}</td>
-                <td>{{ dog.fathers_breed_id }}</td>
-                <td>{{ dog.mothers_breed_id }}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <TableComponent :keys="keys" title="Dog" :data="fetchedData"></TableComponent>
 </template>
 
 <script>
     import axios from "axios";
+    import TableComponent from "./TableComponent";
+
     export default {
         name: "DogList",
+        components: {TableComponent},
         data: function () {
             return {
-                dogs: [],
+                keys: ["id", "fancy_name", "age", "breed_id", "fathers_breed_id", "mothers_breed_id"],
+                fetchedData: [],
                 breeds: {},
             }
         },
@@ -46,7 +23,7 @@
                });
             axios.get("http://localhost:5000/dogs")
                 .then((response) => {
-                    this.dogs = Array.map(response.data, (i) => {
+                    this.fetchedData = Array.map(response.data, (i) => {
                        i.fathers_breed_id = this.breeds[i.fathers_breed_id];
                        i.mothers_breed_id = this.breeds[i.mothers_breed_id];
                        i.breed_id = this.breeds[i.breed_id];

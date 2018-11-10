@@ -16,6 +16,7 @@
                     <li class="nav-item"><router-link to="/rings" class="nav-link">Rings</router-link></li>
                     <li class="nav-item"><router-link to="/breeds" class="nav-link">Breeds</router-link></li>
                     <li class="nav-item"><router-link to="/experts" class="nav-link">Experts</router-link></li>
+                    <li class="nav-item"><router-link to="/prizes" class="nav-link">Prizes</router-link></li>
                 </ul>
             </div>
         </nav>

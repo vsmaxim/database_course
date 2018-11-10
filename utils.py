@@ -11,7 +11,9 @@ def get_sql_table_name(data):
 
 def sql_stringify(item):
     """Function that returns sql-guarded string"""
-    if isinstance(item, int) or isinstance(item, float):
+    if item is None:
+      return 'null'
+    elif isinstance(item, int) or isinstance(item, float):
         return str(item)
     else:
         item = str(item).replace("'", "''").replace('"', '""')
@@ -60,7 +62,7 @@ class SqlTranslator:
         return AsIs(', '.join(self._write_tuple(obj)))
 
     @staticmethod
-    def update_pattern(self, diff: dict):
+    def update_pattern(diff: dict):
         """
         Method to retrieve update sql pattern
 

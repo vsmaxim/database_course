@@ -1,39 +1,19 @@
 <template>
-    <div>
-        <div class="page-header">
-            <h2>Participant list</h2>
-            <router-link to="/participants/add" class="btn btn-dark">Add Participant</router-link>
-        </div>
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">id</th>
-                <th scope="col">Name</th>
-                <th scope="col">Dog</th>
-                <th scope="col">Club</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="participant in participants" :key="participant.id">
-                <td>{{ participant.id }}</td>
-                <td>{{ participant.last_name}} {{participant.first_name}} {{participant.middle_name}}</td>
-                <td>{{ participant.dog }}</td>
-                <td>{{ participant.club }}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <TableComponent :keys="keys" title="Participant" :data="fetchedData"></TableComponent>
 </template>
 
 <script>
     import axios from 'axios';
+    import TableComponent from "./TableComponent";
     export default {
         name: "ParticipantList",
+        components: {TableComponent},
         data: function () {
             return {
                 clubs: {},
                 dogs: {},
-                participants: [],
+                keys: ["id", "full_name", "dog", "club", "ring_id",],
+                fetchedData: [],
             }
         },
         mounted() {
@@ -51,15 +31,25 @@
                 ))
                 .catch((e) => console.log(e));
             axios.get('http://localhost:5000/participants')
-                .then((response) => this.participants = Array.map(response.data, (i) => {
+                .then((response) => this.fetchedData = Array.map(response.data, (i) => {
                     console.log(i);
                     i.club = this.clubs[i.club_id];
                     i.dog = this.dogs[i.dog_id];
+                    i.full_name = `${i.last_name} ${i.first_name} ${i.middle_name}`;
                     return i;
                 }))
+                .then((participants) => participants.forEach((item, index) => {
+                   axios.get(`http://localhost:5000/participants/${item.id}/ring`)
+                       .then((response) => {
+                           item.ring_id = response.data.ring_id;
+                           if (!item.ring_id) {
+                               item.ring_id = "N/A";
+                           }
+                           this.$set(this.fetchedData, index, item);
+                       })
+                       .catch((e) => console.log(e));
+                }))
                 .catch((e) => console.log(e));
-            console.log(this.clubs);
-            console.log(this.participants);
         }
     }
 </script>

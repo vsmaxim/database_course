@@ -1,38 +1,34 @@
 <template>
     <div>
-        <div class="page-header">
-            <h2>Breed list</h2>
-            <router-link to="/breeds/add" class="btn btn-dark">Add breed</router-link>
-        </div>
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Breed</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="breed in breeds" :key="breed.id">
-                <td>{{ breed.id }}</td>
-                <td>{{ breed.name }}</td>
-            </tr>
-            </tbody>
-        </table>
+        <TableComponent :keys="keys" title="Breed" :data="fetchedData"></TableComponent>
     </div>
 </template>
 
 <script>
     import axios from "axios";
+    import TableComponent from "./TableComponent";
+
     export default {
         name: "BreedList",
+        components: {TableComponent},
         data: function () {
             return {
-                breeds: []
+                breeds: [],
+                keys: ["id", "name", "expert"],
+                fetchedData: [],
             }
         },
         mounted() {
             axios.get("http://localhost:5000/breeds")
-                .then((response) => this.breeds = response.data)
+                .then((response) => this.fetchedData = response.data)
+                .then((breeds) => breeds.forEach((item, index) => {
+                    axios.get(`http://localhost:5000/breeds/${item.id}/experts`)
+                        .then((response) => {
+                            const expert_id = response.data.expert_id;
+                            item.expert = expert_id ? expert_id : "N/A";
+                            this.$set(this.fetchedData, index, item);
+                        })
+                }));
         }
     }
 </script>

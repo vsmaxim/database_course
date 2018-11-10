@@ -34,7 +34,9 @@ CREATE TABLE ring (
   id SERIAL PRIMARY KEY
 );
 
-CREATE TABLE experts ();
+CREATE TABLE experts (
+  id SERIAL PRIMARY KEY
+);
 
 CREATE TABLE prizes (
   id SERIAL PRIMARY KEY,
@@ -59,5 +61,6 @@ ALTER TABLE ring
 
 ALTER TABLE prizes
     ADD COLUMN dog_id INTEGER REFERENCES dog UNIQUE,
-    ADD COLUMN ring_id INTEGER REFERENCES ring;
+    ADD COLUMN ring_id INTEGER REFERENCES ring,
+    ADD UNIQUE (place, ring_id);
 

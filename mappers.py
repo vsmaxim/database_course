@@ -74,7 +74,8 @@ class FetchMixin:
                 "id": id
             }
         )
-        return self.cursor.fetchone()
+        init_dict = self.construct_object(self.cursor.fetchone())
+        return self.obj_class(**init_dict)
 
 
 class WriteMixin:
@@ -108,7 +109,7 @@ class WriteMixin:
         if commit:
             self.connection.commit()
 
-    def replace(self, diff, commit=True):
+    def replace(self, obj, diff, commit=True):
         """
         Method to update object in database
 
@@ -124,7 +125,7 @@ class WriteMixin:
             {
                 "table": self._table_name,
                 "replaces": self._translator.update_pattern(diff),
-                "id": 1 # Todo: deal with id
+                "id": obj.id
             }
         )
         if commit:

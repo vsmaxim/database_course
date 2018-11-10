@@ -1,48 +1,38 @@
 <template>
-    <div>
-        <div class="page-header">
-            <h2>Club list</h2>
-            <router-link to="/clubs/add" class="btn btn-dark">Add club</router-link>
-        </div>
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Club</th>
-                <th scope="col">Breeds</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="club in clubs" :key="club.id">
-                <td>{{ club.id }}</td>
-                <td>{{ club.name }}</td>
-                <td>{{ club.breeds }}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <TableComponent :keys="keys" title="Club" :data="fetchedData"></TableComponent>
 </template>
 
 <script>
     import axios from 'axios';
+    import TableComponent from "./TableComponent";
 
     export default {
         name: "ClubList",
+        components: {TableComponent},
         data: function () {
             return {
                 clubs: [],
+                keys: ["id", "name", "breeds", "first_places", "second_places", "third_places",],
+                fetchedData: [],
             }
         },
         mounted() {
             axios.get('http://localhost:5000/clubs')
-                .then((response) => this.clubs = response.data)
+                .then((response) => this.fetchedData = response.data)
                 .then((clubs) => Array.forEach(clubs, (item, index) => {
                     axios.get(`http://localhost:5000/clubs/${item.id}/breeds`)
                         .then((response) => response.data.join(', '))
                         .then((breeds) => {
                             item.breeds = breeds;
-                            this.$set(this.clubs, index, item);
+                            this.$set(this.fetchedData, index, item);
                         });
+                    axios.get(`http://localhost:5000/clubs/${item.id}/prizes`)
+                        .then((response) => {
+                            item.first_places = response.data.first;
+                            item.second_places = response.data.second;
+                            item.third_places = response.data.third;
+                            this.$set(this.fetchedData, index, item);
+                        })
                 }));
         }
     }

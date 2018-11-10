@@ -107,11 +107,37 @@ class BreedExpertsResource(resources.ModelResource):
     def get(self, id):
         return self.mapper.get_experts(id)
 
+
 class ExpertsBreedResource(resources.ModelResource):
     data = models.Experts
 
     def get(self, id):
         return self.mapper.get_dog_id(id)
+
+
+class ParticipantRingResource(resources.ModelResource):
+    data = models.Participant
+
+    def get(self, id):
+        return self.mapper.get_ring(id)
+
+
+class ExpertsUnassignResource(resources.ModelResource):
+    data = models.Experts
+
+    def put(self, id):
+        obj = self.mapper.get_by_id(id)
+        self.mapper.replace(obj, {"ring_id": None})
+        return {}, 200
+
+
+class ExpertsAssignResource(resources.ModelResource):
+    data = models.Experts
+
+    def put(self, id):
+        obj = self.mapper.get_by_id(id)
+        self.mapper.replace(obj, {"ring_id": request.json.get("ring_id")})
+        return {}, 200
 
 api.add_resource(ClubListResource, '/clubs')
 api.add_resource(ClubResource, '/clubs/<int:id>')
@@ -119,6 +145,7 @@ api.add_resource(ClubBreedsResource, '/clubs/<int:id>/breeds')
 api.add_resource(ClubPrizesResource, '/clubs/<int:id>/prizes')
 api.add_resource(ParticipantListResource, '/participants'),
 api.add_resource(ParticipantRetrieveResource, '/participants/<int:id>')
+api.add_resource(ParticipantRingResource, '/participants/<int:id>/ring')
 api.add_resource(BreedListResource, '/breeds')
 api.add_resource(BreedRetrieveResource, '/breeds/<int:id>')
 api.add_resource(BreedExpertsResource, '/breeds/<int:id>/experts')
@@ -129,6 +156,8 @@ api.add_resource(DogRetrieveResource, '/dogs/<int:id>')
 api.add_resource(ExpertsListResource, '/experts')
 api.add_resource(ExpertsUpdateResource, '/experts/<int:id>')
 api.add_resource(ExpertsBreedResource, '/experts/<int:id>/dog')
+api.add_resource(ExpertsAssignResource, '/experts/<int:id>/assign')
+api.add_resource(ExpertsUnassignResource, '/experts/<int:id>/unassign')
 api.add_resource(PrizeListResource, '/prizes')
 api.add_resource(PrizeRetrieveResource, '/prizes/<int:id>')
 
