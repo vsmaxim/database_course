@@ -53,7 +53,7 @@
             e.preventDefault();
         },
         sendForm: function (payload) {
-            axios.post("http://localhost:5000/breeds", payload)
+            this.$http.post("breeds", payload)
                 .then((response) => this.$router.back())
                 .catch((error) => console.log(error));
         }

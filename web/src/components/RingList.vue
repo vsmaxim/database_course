@@ -17,16 +17,16 @@
             }
         },
         mounted() {
-            axios.get('http://localhost:5000/breeds')
+            this.$http.get('breeds')
                 .then((response) => Array.forEach(response.data,(i) => this.breeds[i.id] = i.name))
                 .catch((e) => console.log(e));
-            axios.get('http://localhost:5000/rings')
+            this.$http.get('rings')
                 .then((response) => this.fetchedData = response.data)
                 .then((rings) => this.fetchBreeds());
         },
         methods: {
             fetchBreeds() {
-                axios.get('http://localhost:5000/breeds')
+                this.$http.get('breeds')
                     .then((response) => {
                         let breeds = {};
                         response.data.forEach((i) => breeds[i.id] = i.name);

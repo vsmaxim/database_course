@@ -34,8 +34,6 @@
 </template>
 
 <script>
-    import axios from 'axios';
-
     export default {
         name: "PrizesAdd",
         data: function () {
@@ -61,18 +59,18 @@
         },
         methods: {
             fetchDefinedPrizes() {
-                axios.get('http://localhost:5000/prizes')
+                this.$http.get('prizes')
                     .then((response) => this.prizes = response.data)
                     .then((prizes) => prizes.forEach((item) => this.definedPrizes.hasOwnProperty(item.ring_id) ?
                         this.definedPrizes[item.ring_id].shift(item.place) :
                         this.definedPrizes[item.ring_id] = [item.place]))
             },
             fetchDogs() {
-                axios.get('http://localhost:5000/dogs')
+                this.$http.get('dogs')
                   .then((response) => this.dogs = response.data);
             },
             fetchRings() {
-                axios.get('http://localhost:5000/rings')
+                this.$http.get('rings')
                     .then((response) => this.rings = response.data);
             },
             constructAvailablePrizes(ring_id) {
@@ -116,7 +114,7 @@
                 }
             },
             submitForm(payload) {
-                axios.post("http://localhost:5000/prizes", payload)
+                this.$http.post("prizes", payload)
                     .then((response) => this.$router.back())
                     .catch((error) => console.log(error));
             }

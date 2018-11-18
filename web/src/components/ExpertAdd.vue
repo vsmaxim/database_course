@@ -42,10 +42,10 @@
             }
         },
         mounted: function () {
-            axios.get("http://localhost:5000/rings")
+            this.$http.get("rings")
                 .then((response) => this.rings = response.data)
                 .catch((e) => console.log(e));
-            axios.get("http://localhost:5000/participants")
+            this.$http.get("participants")
                 .then((response) => this.participants = Array.map((response.data), (i) => {
                     console.log(i);
                     return {
@@ -75,7 +75,7 @@
                 }
             },
             submitForm(payload) {
-                axios.post("http://localhost:5000/experts", payload)
+                this.$http.post("experts", payload)
                     .then((response) => this.$router.back())
                     .catch((error) => console.log(error));
             }

@@ -43,6 +43,19 @@ CREATE TABLE prizes (
   place   SMALLINT CHECK (place >= 1 AND place <= 3)
 );
 
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(64) NOT NULL,
+  password VARCHAR(64) NOT NULL
+);
+
+CREATE TABLE groups (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(64) NOT NULL
+);
+
+-- Relations
+
 ALTER TABLE dog
     ADD COLUMN fathers_breed_id INTEGER REFERENCES breed,
     ADD COLUMN mothers_breed_id INTEGER REFERENCES breed,
@@ -64,3 +77,12 @@ ALTER TABLE prizes
     ADD COLUMN ring_id INTEGER REFERENCES ring,
     ADD UNIQUE (place, ring_id);
 
+ALTER TABLE users
+    ADD COLUMN participant_id INTEGER REFERENCES participant UNIQUE,
+    ADD COLUMN group_id INTEGER REFERENCES groups;
+
+-- Predefined values
+INSERT INTO groups (name) VALUES ('administrator');
+INSERT INTO groups (name) VALUES ('participant');
+INSERT INTO groups (name) VALUES ('expert');
+INSERT INTO users (username, password, participant_id, group_id) VALUES ('dietwice', 'qweasd123', 1, 1);

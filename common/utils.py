@@ -1,18 +1,23 @@
+from functools import wraps
+
 from psycopg2.extensions import AsIs
+from flask import session
 
 
 def get_table_name(data):
+    """Method to get table name (Not sql safe)"""
     return str(data.__name__).lower()
 
 
 def get_sql_table_name(data):
+    """Method to get sql-safe table name"""
     return AsIs(get_table_name(data))
 
 
 def sql_stringify(item):
     """Function that returns sql-guarded string"""
     if item is None:
-      return 'null'
+      return 'NULL'
     elif isinstance(item, int) or isinstance(item, float):
         return str(item)
     else:
@@ -24,8 +29,6 @@ class SqlTranslator:
     """Class to retrieve sql-related fields and names"""
     def __init__(self, data):
         self._data = data
-        for i in self._data.__dict__.keys():
-            print(i)
         self._data_dict = data.__dict__.copy()
 
     @property
@@ -83,4 +86,19 @@ class SqlTranslator:
         for key in exclude_keys:
             copy_dict.pop(key, None)
         return copy_dict.keys()
+
+# def permission_required(permission_group):
+#     def decorator(view):
+#         @wraps(view)
+#         def wrapper(*args, **kwargs):
+#             group = session.get("group", None)
+#             print(session.sid)
+#             if group is None:
+#                 return {"message": "Unauthorized"}, 401
+#             elif group != permission_group:
+#                 return {"message": "You don't have permission to access this view"}, 403
+#             else:
+#                 return view(*args, **kwargs)
+#         return wrapper
+#     return decorator
 

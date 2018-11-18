@@ -55,7 +55,7 @@
                 e.preventDefault();
             },
             sendForm: function (payload) {
-                axios.post("http://localhost:5000/clubs", payload)
+                this.$http.post("clubs", payload)
                     .then((response) => this.$router.back())
                     .catch((error) => console.log(error));
             }

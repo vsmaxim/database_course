@@ -16,13 +16,13 @@
             }
         },
         mounted() {
-            axios.get("http://localhost:5000/prizes")
+            this.$http.get("prizes")
                 .then((response) => this.fetchedData = response.data)
                 .then(this.fetchDogs)
         },
         methods: {
             fetchDogs() {
-                axios.get("http://localhost:5000/dogs")
+                this.$http.get("dogs")
                     .then((response) => {
                         let dogNames = {};
                         response.data.forEach((item) => dogNames[item.id] = item.fancy_name);

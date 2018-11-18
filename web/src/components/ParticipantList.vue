@@ -1,5 +1,13 @@
 <template>
-    <TableComponent :keys="keys" title="Participant" :data="fetchedData"></TableComponent>
+    <TableComponent
+            :keys="keys"
+            title="Participant"
+            :data="fetchedData"
+            :editable="true"
+            edit-route="participant-edit"
+            :info="true"
+            info-route="participant-info"
+    ></TableComponent>
 </template>
 
 <script>
@@ -17,20 +25,20 @@
             }
         },
         mounted() {
-            axios.get('http://localhost:5000/clubs')
+            this.$http.get('clubs')
                 .then((response) => Array.forEach(
                         response.data,
                         (obj) => this.clubs[obj.id] = obj.name
                     )
                 )
                 .catch((e) => console.log(e));
-            axios.get('http://localhost:5000/dogs')
+            this.$http.get('dogs')
                 .then((response) => Array.forEach(
                     response.data,
                     (obj) => this.dogs[obj.id] = obj.fancy_name
                 ))
                 .catch((e) => console.log(e));
-            axios.get('http://localhost:5000/participants')
+            this.$http.get('participants')
                 .then((response) => this.fetchedData = Array.map(response.data, (i) => {
                     console.log(i);
                     i.club = this.clubs[i.club_id];
@@ -39,7 +47,7 @@
                     return i;
                 }))
                 .then((participants) => participants.forEach((item, index) => {
-                   axios.get(`http://localhost:5000/participants/${item.id}/ring`)
+                   this.$http.get(`participants/${item.id}/ring`)
                        .then((response) => {
                            item.ring_id = response.data.ring_id;
                            if (!item.ring_id) {

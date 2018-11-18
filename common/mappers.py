@@ -1,9 +1,6 @@
-from abc import ABC
-from typing import Type, Any, List
+from typing import Type, Any
 
-from psycopg2.extensions import AsIs
-
-from utils import get_sql_table_name, SqlTranslator
+from common.utils import get_sql_table_name, SqlTranslator
 
 
 class Data:
@@ -116,6 +113,8 @@ class WriteMixin:
         :param diff: difference
         :param commit: Commit to database
         """
+        for key in diff:
+            diff[key] = diff[key] or None
         self.cursor.execute(
             """
                 UPDATE %(table)s

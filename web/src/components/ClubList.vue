@@ -17,16 +17,16 @@
             }
         },
         mounted() {
-            axios.get('http://localhost:5000/clubs')
+            this.$http.get('clubs')
                 .then((response) => this.fetchedData = response.data)
                 .then((clubs) => Array.forEach(clubs, (item, index) => {
-                    axios.get(`http://localhost:5000/clubs/${item.id}/breeds`)
+                    this.$http.get(`clubs/${item.id}/breeds`)
                         .then((response) => response.data.join(', '))
                         .then((breeds) => {
                             item.breeds = breeds;
                             this.$set(this.fetchedData, index, item);
                         });
-                    axios.get(`http://localhost:5000/clubs/${item.id}/prizes`)
+                    this.$http.get(`clubs/${item.id}/prizes`)
                         .then((response) => {
                             item.first_places = response.data.first;
                             item.second_places = response.data.second;

@@ -60,7 +60,7 @@
             }
         },
         mounted() {
-            axios.get("http://localhost:5000/breeds")
+            this.$http.get("breeds")
                 .then((response) => this.breeds = response.data)
                 .catch((error) => console.log(error));
         },
@@ -85,7 +85,7 @@
                 }
             },
             submitForm(payload) {
-                axios.post("http://localhost:5000/dogs", payload)
+                this.$http.post("dogs", payload)
                     .then((response) => this.$router.back())
                     .catch((error) => console.log(error));
             }

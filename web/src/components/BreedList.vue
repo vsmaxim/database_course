@@ -5,7 +5,6 @@
 </template>
 
 <script>
-    import axios from "axios";
     import TableComponent from "./TableComponent";
 
     export default {
@@ -19,10 +18,10 @@
             }
         },
         mounted() {
-            axios.get("http://localhost:5000/breeds")
+            this.$http.get('breeds')
                 .then((response) => this.fetchedData = response.data)
                 .then((breeds) => breeds.forEach((item, index) => {
-                    axios.get(`http://localhost:5000/breeds/${item.id}/experts`)
+                    this.$http.get(`breeds/${item.id}/experts`)
                         .then((response) => {
                             const expert_id = response.data.expert_id;
                             item.expert = expert_id ? expert_id : "N/A";

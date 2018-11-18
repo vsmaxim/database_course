@@ -57,10 +57,10 @@
             }
         },
         mounted: function () {
-            axios.get("http://localhost:5000/clubs")
+            this.$http.get("clubs")
                 .then((response) => this.clubs = response.data)
                 .catch((e) => console.log(e));
-            axios.get("http://localhost:5000/dogs")
+            this.$http.get("dogs")
                 .then((response) => this.dogs = response.data)
                 .catch((e) => console.log(e));
         },
@@ -86,7 +86,7 @@
                 }
             },
             submitForm(payload) {
-                axios.post("http://localhost:5000/participants", payload)
+                this.$http.post("participants", payload)
                     .then((response) => this.$router.back())
                     .catch((error) => console.log(error));
             }

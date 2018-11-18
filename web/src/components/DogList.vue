@@ -17,11 +17,11 @@
             }
         },
         mounted() {
-           axios.get("http://localhost:5000/breeds")
+           this.$http.get("breeds")
                .then((response) => {
                    Array.forEach(response.data, (i) => this.breeds[i.id] = i.name);
                });
-            axios.get("http://localhost:5000/dogs")
+            this.$http.get("dogs")
                 .then((response) => {
                     this.fetchedData = Array.map(response.data, (i) => {
                        i.fathers_breed_id = this.breeds[i.fathers_breed_id];
