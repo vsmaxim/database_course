@@ -5,10 +5,12 @@
 <script>
     import axios from 'axios';
     import TableComponent from "./TableComponent";
+    import login_required from "./mixins/login_required";
 
     export default {
         name: "RingList",
         components: {TableComponent},
+        mixins: [login_required],
         data() {
             return {
                 fetchedData: [],

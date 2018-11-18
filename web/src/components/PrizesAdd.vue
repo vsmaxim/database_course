@@ -34,8 +34,11 @@
 </template>
 
 <script>
+    import login_required from "./mixins/login_required";
+
     export default {
         name: "PrizesAdd",
+        mixins: [login_required],
         data: function () {
             return {
                 form: {

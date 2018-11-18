@@ -27,9 +27,11 @@
 
 <script>
     import axios from 'axios';
+    import login_required from "./mixins/login_required";
 
     export default {
         name: "ClubAdd",
+        mixins: [login_required],
         data: function () {
             return {
                 errors: [],

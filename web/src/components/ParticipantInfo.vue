@@ -16,9 +16,11 @@
 
 <script>
     import axios from 'axios';
+    import login_required from "./mixins/login_required";
 
     export default {
         name: "ParticipantInfo",
+        mixins: [login_required],
         data() {
             return {
                 participant_id: this.$route.params.id,

@@ -1,5 +1,4 @@
 import psycopg2
-import redis
 import logging
 from flask import Flask
 from flask_cors import CORS
@@ -7,7 +6,6 @@ from flask_restful import Api
 from flask_session import Session
 from api import routes
 
-# Redis = redis.StrictRedis(host='localhost', port=6379, db=0)
 app = Flask(__name__)
 SECRET_KEY = b'\xadLh\x18F\x90\x08\xb2\xc1\xf4J\xd7\xa5\xb2\x9ch'
 SESSION_TYPE = 'redis'

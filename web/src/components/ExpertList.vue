@@ -7,9 +7,11 @@
     import axios from 'axios';
     import TableComponent from "./TableComponent";
     import Vue from 'vue';
+    import login_required from "./mixins/login_required";
     export default {
         name: "ExpertList",
         components: {TableComponent},
+        mixins: [login_required],
         data: function () {
             return {
                 keys: ["id", "participant", "breed_id", "dog_id", "ring_id"],

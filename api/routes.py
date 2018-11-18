@@ -10,6 +10,9 @@ from api.authorization import views as authorization_views
 
 routes = [
     (authorization_views.LoginView, '/login'),
+    (authorization_views.LogoutView, '/logout'),
+    (authorization_views.UsersListView, '/users'),
+    (authorization_views.GroupsListView, '/groups'),
     (club_views.ClubListResource, '/clubs'),
     (club_views.ClubResource, '/clubs/<int:id>'),
     (club_views.ClubBreedsResource, '/clubs/<int:id>/breeds'),

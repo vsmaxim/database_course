@@ -2,7 +2,7 @@
     <div id="table">
         <div class="page-header">
             <h2>{{ title }} list</h2>
-            <router-link to="add" append>Add {{ title }}</router-link>
+            <router-link to="add" append v-if="hasWriteAccess">Add {{ title }}</router-link>
         </div>
         <table class="table">
             <thead>
@@ -40,6 +40,11 @@
             editRoute: String,
             info: false,
             infoRoute: String,
+        },
+        computed: {
+            hasWriteAccess() {
+                return this.$store.state.role === 'administrator';
+            },
         }
     }
 </script>

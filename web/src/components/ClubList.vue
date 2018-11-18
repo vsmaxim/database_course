@@ -5,10 +5,13 @@
 <script>
     import axios from 'axios';
     import TableComponent from "./TableComponent";
+    import loginRequired from './mixins/login_required';
+
 
     export default {
         name: "ClubList",
         components: {TableComponent},
+        mixins: [loginRequired],
         data: function () {
             return {
                 clubs: [],

@@ -6,9 +6,11 @@
 
 <script>
     import TableComponent from "./TableComponent";
+    import loginRequired from './mixins/login_required';
 
     export default {
         name: "BreedList",
+        mixins: [loginRequired],
         components: {TableComponent},
         data: function () {
             return {

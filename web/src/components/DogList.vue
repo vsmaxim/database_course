@@ -5,10 +5,12 @@
 <script>
     import axios from "axios";
     import TableComponent from "./TableComponent";
+    import login_required from "./mixins/login_required";
 
     export default {
         name: "DogList",
         components: {TableComponent},
+        mixins: [login_required],
         data: function () {
             return {
                 keys: ["id", "fancy_name", "age", "breed_id", "fathers_breed_id", "mothers_breed_id"],

@@ -13,9 +13,11 @@
 <script>
     import axios from 'axios';
     import TableComponent from "./TableComponent";
+    import login_required from "./mixins/login_required";
     export default {
         name: "ParticipantList",
         components: {TableComponent},
+        mixins: [login_required],
         data: function () {
             return {
                 clubs: {},
@@ -40,7 +42,6 @@
                 .catch((e) => console.log(e));
             this.$http.get('participants')
                 .then((response) => this.fetchedData = Array.map(response.data, (i) => {
-                    console.log(i);
                     i.club = this.clubs[i.club_id];
                     i.dog = this.dogs[i.dog_id];
                     i.full_name = `${i.last_name} ${i.first_name} ${i.middle_name}`;

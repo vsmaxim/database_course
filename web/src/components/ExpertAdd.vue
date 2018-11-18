@@ -27,9 +27,11 @@
 
 <script>
     import axios from 'axios';
+    import login_required from "./mixins/login_required";
 
     export default {
         name: "ExpertAdd",
+        mixins: [login_required],
         data: function () {
             return {
                 errors: [],
@@ -47,14 +49,12 @@
                 .catch((e) => console.log(e));
             this.$http.get("participants")
                 .then((response) => this.participants = Array.map((response.data), (i) => {
-                    console.log(i);
                     return {
                         name: `${i.last_name} ${i.first_name} ${i.middle_name}`,
                         id: i.id,
                     }
             }))
                 .catch((e) => console.log(e));
-            console.log(this.participants);
         },
         methods: {
             handleForm: function (e) {

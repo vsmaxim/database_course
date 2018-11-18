@@ -5,10 +5,12 @@
 <script>
     import axios from 'axios';
     import TableComponent from "./TableComponent";
+    import login_required from "./mixins/login_required";
 
     export default {
         name: "PrizesList",
         components: {TableComponent},
+        mixins: [login_required],
         data: function () {
             return {
                 keys: ["id", "place", "dog", "ring_id"],

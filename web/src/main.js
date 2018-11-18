@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router';
+import Vuex from 'vuex';
 import App from './App.vue'
 import axios from 'axios';
 import DogList from './components/DogList.vue';
@@ -20,10 +21,13 @@ import PrizesAdd from './components/PrizesAdd';
 import ParticipantEdit from './components/ParticipantEdit';
 import ParticipantInfo from './components/ParticipantInfo';
 import Login from './components/Login';
+import AddUser from './components/AddUser';
+import UserList from './components/UserList';
 
 require("../node_modules/bootstrap/dist/css/bootstrap.min.css");
 
 Vue.use(VueRouter);
+Vue.use(Vuex);
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios.create({
     baseURL: 'http://localhost:5000/',
@@ -39,8 +43,8 @@ const routes = [
     {path: '/dogs/add', component: DogAdd},
     {path: '/participants', component: ParticipantList},
     {path: '/participants/add', component: ParticipantAdd},
-    {path: '/participants/:id/edit', component: ParticipantEdit, name:'participant-edit'},
-    {path: '/participants/:id/info', component: ParticipantInfo, name:'participant-info'},
+    {path: '/participants/:id/edit', component: ParticipantEdit, name: 'participant-edit'},
+    {path: '/participants/:id/info', component: ParticipantInfo, name: 'participant-info'},
     {path: '/rings', component: RingList},
     {path: '/rings/add', component: RingAdd},
     {path: '/experts', component: ExpertList},
@@ -49,21 +53,33 @@ const routes = [
     {path: '/prizes', component: PrizesList},
     {path: '/prizes/add', component: PrizesAdd},
     {path: '/login', component: Login, name: 'login'},
+    {path: '/users', component: UserList, name: 'user-list'},
+    {path: '/users/add', component: AddUser, name: 'user-add'},
 ];
 
 const router = new VueRouter({
     routes,
 });
 
+const store = new Vuex.Store({
+    state: {
+        role: undefined,
+    },
+    mutations: {
+        setGroup(state, group) {
+            state.role = group;
+        },
+        logout(state) {
+            state.role = undefined;
+        }
+    }
+});
+
 axios.interceptors.response.use((config) => config, (error) => router.push({name: 'login'}));
-// axios.interceptors.request.use((config) => {
-//     config.withCredentials = true;
-//     config.crossdomain = true;
-//     return config;
-// }, (error) => Promise.reject(error));
 
 new Vue({
     router,
+    store,
     render: h => h(App),
 }).$mount('#app');
 

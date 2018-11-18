@@ -87,18 +87,18 @@ class SqlTranslator:
             copy_dict.pop(key, None)
         return copy_dict.keys()
 
-# def permission_required(permission_group):
-#     def decorator(view):
-#         @wraps(view)
-#         def wrapper(*args, **kwargs):
-#             group = session.get("group", None)
-#             print(session.sid)
-#             if group is None:
-#                 return {"message": "Unauthorized"}, 401
-#             elif group != permission_group:
-#                 return {"message": "You don't have permission to access this view"}, 403
-#             else:
-#                 return view(*args, **kwargs)
-#         return wrapper
-#     return decorator
+
+def permission_required(permission_groups):
+    def decorator(view):
+        @wraps(view)
+        def wrapper(*args, **kwargs):
+            group = session.get("group", None)
+            if group is None:
+                return {"message": "Unauthorized"}, 401
+            elif group not in permission_groups:
+                return {"message": "You don't have permission to access this view"}, 403
+            else:
+                return view(*args, **kwargs)
+        return wrapper
+    return decorator
 

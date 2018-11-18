@@ -13,7 +13,6 @@
 </template>
 
 <script>
-
     export default {
         name: "Login",
         data() {
@@ -25,7 +24,11 @@
         methods: {
             submitForm() {
                 this.$http.post('login', {"username": this.username, "password": this.password})
-                    .then((response) => this.$router.push('/'))
+                    .then((response) => {
+                        console.log(response.data.group);
+                        this.$store.commit('setGroup', response.data.group);
+                        this.$router.push('/');
+                    })
                     .catch((err) => console.log(err));
             }
         }
