@@ -6,5 +6,4 @@ class Prizes(Data):
         self.id = id
         self.dog_id = dog_id
         self.place = place
-        self.ring_id = ring_id
         super().__init__()

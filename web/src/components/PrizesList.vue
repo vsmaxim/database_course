@@ -13,7 +13,7 @@
         mixins: [login_required],
         data: function () {
             return {
-                keys: ["id", "place", "dog", "ring_id"],
+                keys: ["id", "place", "dog"],
                 fetchedData: [],
             }
         },

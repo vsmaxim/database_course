@@ -23,6 +23,7 @@ import ParticipantInfo from './components/ParticipantInfo';
 import Login from './components/Login';
 import AddUser from './components/AddUser';
 import UserList from './components/UserList';
+import RingEdit from './components/RingEdit';
 
 require("../node_modules/bootstrap/dist/css/bootstrap.min.css");
 
@@ -55,6 +56,7 @@ const routes = [
     {path: '/login', component: Login, name: 'login'},
     {path: '/users', component: UserList, name: 'user-list'},
     {path: '/users/add', component: AddUser, name: 'user-add'},
+    {path: '/rings/:id/edit', component: RingEdit, name: 'ring-edit'},
 ];
 
 const router = new VueRouter({

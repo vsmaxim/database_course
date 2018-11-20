@@ -1,4 +1,5 @@
 from typing import Type, Any
+from psycopg2 import IntegrityError
 
 from common.utils import get_sql_table_name, SqlTranslator
 
@@ -75,7 +76,7 @@ class FetchMixin:
         return self.obj_class(**init_dict)
 
 
-class WriteMixin:
+class WriteMixin():
     obj_class: Type[Data]
     cursor: Any
     connection: Any
@@ -92,17 +93,21 @@ class WriteMixin:
         :param obj: Instance of object
         :param commit: Commit to db
         """
-        self.cursor.execute(
-            """
-                INSERT INTO %(table)s %(fields)s
-                VALUES (%(values)s)
-            """,
-            {
-                "table": self._table_name,
-                "fields": self._translator.write_pattern,
-                "values": self._translator.write_values_pattern(obj),
-            }
-        )
+        try:
+            self.cursor.execute(
+                """
+                    INSERT INTO %(table)s %(fields)s
+                    VALUES (%(values)s)
+                """,
+                {
+                    "table": self._table_name,
+                    "fields": self._translator.write_pattern,
+                    "values": self._translator.write_values_pattern(obj),
+                }
+            )
+        except IntegrityError:
+            self.connection.rollback()
+            raise AttributeError
         if commit:
             self.connection.commit()
 
@@ -115,18 +120,22 @@ class WriteMixin:
         """
         for key in diff:
             diff[key] = diff[key] or None
-        self.cursor.execute(
-            """
-                UPDATE %(table)s
-                SET %(replaces)s
-                WHERE id = %(id)s
-            """,
-            {
-                "table": self._table_name,
-                "replaces": self._translator.update_pattern(diff),
-                "id": obj.id
-            }
-        )
+        try:
+            self.cursor.execute(
+                """
+                    UPDATE %(table)s
+                    SET %(replaces)s
+                    WHERE id = %(id)s
+                """,
+                {
+                    "table": self._table_name,
+                    "replaces": self._translator.update_pattern(diff),
+                    "id": obj.id
+                }
+            )
+        except IntegrityError:
+            self.connection.rollback()
+            raise AttributeError
         if commit:
             self.connection.commit()
 

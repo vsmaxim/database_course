@@ -1,5 +1,11 @@
 <template>
-    <TableComponent title="Ring" :keys="keys" :data="fetchedData"></TableComponent>
+    <TableComponent
+            title="Ring"
+            :keys="keys"
+            :data="fetchedData"
+            :editable="true"
+            edit-route="ring-edit"
+    ></TableComponent>
 </template>
 
 <script>

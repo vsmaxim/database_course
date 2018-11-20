@@ -73,9 +73,7 @@ ALTER TABLE ring
   ADD COLUMN breed_id INTEGER REFERENCES breed UNIQUE;
 
 ALTER TABLE prizes
-    ADD COLUMN dog_id INTEGER REFERENCES dog UNIQUE,
-    ADD COLUMN ring_id INTEGER REFERENCES ring,
-    ADD UNIQUE (place, ring_id);
+    ADD COLUMN dog_id INTEGER REFERENCES dog UNIQUE;
 
 ALTER TABLE users
     ADD COLUMN participant_id INTEGER REFERENCES participant UNIQUE,
@@ -83,6 +81,9 @@ ALTER TABLE users
 
 -- Predefined values
 INSERT INTO groups (name) VALUES ('administrator');
-INSERT INTO groups (name) VALUES ('participant');
-INSERT INTO groups (name) VALUES ('expert');
+INSERT INTO groups (name) VALUES ('user');
+INSERT INTO breed (name) VALUES ('Spitz');
+INSERT INTO dog (fancy_name, age, breed_id, fathers_breed_id, mothers_breed_id) VALUES ('alexdog', 10, 1, 1, 1);
+INSERT INTO club (name) VALUES ('Welcome to the club, Buddy!');
+INSERT INTO participant (first_name, middle_name, last_name, dog_id, club_id) VALUES ('Alexeev', 'Alexeevich', 'Alexey', 1, 1);
 INSERT INTO users (username, password, participant_id, group_id) VALUES ('dietwice', 'qweasd123', 1, 1);

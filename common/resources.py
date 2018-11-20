@@ -23,7 +23,10 @@ class ListCreateResource(ModelResource):
     @permission_required(['administrator', ])
     def post(self):
         obj = self.data(**request.json)
-        self.mapper.save(obj)
+        try:
+            self.mapper.save(obj)
+        except AttributeError as e:
+            return {"error": e.args[0]}, 400
         return obj.json, 201
 
 
@@ -35,5 +38,8 @@ class RetrieveUpdateResource(ModelResource):
     @permission_required(['administrator', ])
     def put(self, id):
         obj = self.mapper.get_by_id(id)
-        self.mapper.replace(obj, request.json)
+        try:
+            self.mapper.replace(obj, request.json)
+        except AttributeError as e:
+            return {"error": e.args[0]}, 400
         return obj.json, 200
